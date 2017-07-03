@@ -22,3 +22,4 @@ bin/
 .pmd
 .ruleset
 local.properties
+.idea
