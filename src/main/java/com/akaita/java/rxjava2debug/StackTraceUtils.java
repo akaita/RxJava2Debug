@@ -46,6 +46,7 @@ class StackTraceUtils {
         for (String line : lines) {
             filterIn = filterIn
                     || basePackages == null
+                    || basePackages.length == 0
                     || startsWithAny(line, basePackages);
             if (filterIn) {
                 StackTraceElement element = parseStackTraceLine(line);
