@@ -24,8 +24,8 @@ apply plugin: "com.github.hierynomus.license"
 sourceCompatibility = '1.6'
 targetCompatibility = '1.6'
 
-group = "com.github.akarnokd" 
-ext.githubProjectName = 'rxjava2-extensions'
+group = "com.akaita.java"
+ext.githubProjectName = 'rxjava2-debug'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
@@ -85,9 +85,9 @@ artifacts {
 
 jar {
     manifest {
-        name = 'rxjava2-extensions'
-        instruction 'Bundle-Vendor', 'akarnokd'
-        instruction 'Bundle-DocURL', 'https://github.com/akarnokd/RxJava2Extensions'
+        name = 'rxjava2-debug'
+        instruction 'Bundle-Vendor', 'akaita'
+        instruction 'Bundle-DocURL', 'https://github.com/akarnokd/RxJava2Debug'
         instruction 'Import-Package', '!org.junit,!junit.framework,!org.mockito.*,*'
         instruction 'Eclipse-ExtensibleAPI', 'true'
     }
