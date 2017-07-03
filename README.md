@@ -14,7 +14,7 @@ repositories {
 
 ```groovy
 dependencies {
-    compile 'com.akaita.java:rxjava2-debug:1.0.0'
+    compile 'com.akaita.java:rxjava2-debug:1.1.0'
 }
 ```
 
@@ -35,7 +35,7 @@ Regardless of the thread a crash happens in, a nice StackTrace referring to the 
 Config:
  
  ```java
- RxJava2Debug.enableRxJava2AssemblyTracking(null);
+ RxJava2Debug.enableRxJava2AssemblyTracking();
  ```
  
 Example (pointing to my own faulty code in `com.akaita.fgas.activities.TopActivity.onResume(TopActivity.java:205)`):
