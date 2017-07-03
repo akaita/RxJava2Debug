@@ -18,19 +18,11 @@ package com.akaita.java.rxjava2debug;
 
 import hu.akarnokd.rxjava2.debug.RxJavaAssemblyException;
 import hu.akarnokd.rxjava2.debug.RxJavaAssemblyTracking;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import static com.akaita.java.rxjava2debug.ExceptionUtils.setRootCause;
+import static com.akaita.java.rxjava2debug.StackTraceUtils.parseStackTrace;
 
 public class RxJava2Debug {
-    //Example: "at com.akaita.fgas.MainActivity.onCreate(MainActivity.java:210)"
-    private static final Pattern STACK_TRACE_ELEMENT_PATTERN = Pattern.compile("^at (.*)\\.(.*)\\((.*):([0-9]+)\\)$");
-    private static final String NEW_LINE_REGEX = "\\n\\r|\\r\\n|\\n|\\r";
-
     private static String BASE_APP_PACKAGE_NAME = "com.akaita.fgas";
 
     /**
@@ -54,62 +46,15 @@ public class RxJava2Debug {
 
                 RxJavaAssemblyException assembledException = RxJavaAssemblyException.find(e);
                 if (assembledException != null) {
-                    StackTraceElement[] clearStack = parseStackTrace(assembledException);
-                    Throwable clearException = new Throwable(e);
+                    StackTraceElement[] clearStack = parseStackTrace(assembledException, BASE_APP_PACKAGE_NAME);
+                    Throwable clearException = new Throwable();
                     clearException.setStackTrace(clearStack);
-                    toThrow = clearException;
+                    toThrow = setRootCause(e, clearException);
                 }
 
                 previousDefaultHandler.uncaughtException(t, toThrow);
             }
         });
-    }
-
-    /**
-     * Extract StackTrace and filter to show an app-specific entry at its top
-     *
-     * @param exception RxJavaAssemblyException to be parsed
-     * @return StackTrace, filtered so a app-specific line is at the top of it
-     */
-    private @NonNull
-    static StackTraceElement[] parseStackTrace(@NonNull RxJavaAssemblyException exception) {
-        String[] lines = exception.stacktrace()
-                .split(NEW_LINE_REGEX);
-
-        List<StackTraceElement> stackTrace = new ArrayList<StackTraceElement>();
-        boolean appSpecificFound = false;
-        for (String line : lines) {
-            appSpecificFound = appSpecificFound || line.contains(BASE_APP_PACKAGE_NAME);
-            if (appSpecificFound) {
-                StackTraceElement element = parseStackTraceLine(line);
-                if (element != null) {
-                    stackTrace.add(element);
-                }
-            }
-        }
-
-        return stackTrace.toArray(new StackTraceElement[0]);
-    }
-
-    /**
-     * Parse string containing a <i>single line</i> of a StackTrace
-     *
-     * @param stackTraceLine string containing single line of a StackTrace
-     * @return parsed StackTraceElement
-     */
-    private @Nullable
-    static StackTraceElement parseStackTraceLine(@NonNull String stackTraceLine) {
-        StackTraceElement retVal = null;
-
-        Matcher matcher = STACK_TRACE_ELEMENT_PATTERN.matcher(stackTraceLine);
-        if (matcher.matches()) {
-            String clazz = matcher.group(1);
-            String method = matcher.group(2);
-            String filename = matcher.group(3);
-            int line = Integer.valueOf(matcher.group(4));
-            retVal = new StackTraceElement(clazz, method, filename, line);
-        }
-        return retVal;
     }
 
 }
