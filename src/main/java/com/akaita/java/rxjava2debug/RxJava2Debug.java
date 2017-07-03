@@ -37,7 +37,7 @@ public class RxJava2Debug {
      * Enable a system to collect information about RxJava's execution to provide a more meaningful StackTrace in case of crash<br/>
      * <b>Beware:</b> Any crash-reporting handler should be set up <i>before</i> calling this method
      */
-    public static void enableRxJavaAssemblyTracking() {
+    public static void enableRxJava2AssemblyTracking() {
         RxJavaAssemblyTracking.enable();
         setRxJavaAssemblyHandler();
     }
