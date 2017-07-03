@@ -33,6 +33,14 @@ public class RxJava2Debug {
     /**
      * Enable a system to collect information about RxJava's execution to provide a more meaningful StackTrace in case of crash<br/>
      * <b>Beware:</b> Any crash-reporting handler should be set up <i>before</i> calling this method
+     */
+    public static void enableRxJava2AssemblyTracking() {
+        enableRxJava2AssemblyTracking(null);
+    }
+
+    /**
+     * Enable a system to collect information about RxJava's execution to provide a more meaningful StackTrace in case of crash<br/>
+     * <b>Beware:</b> Any crash-reporting handler should be set up <i>before</i> calling this method
      * @param basePackageNames List of base package names of your code, so the created stacktrace will have one of those on its top<br/>
      *                         <i>null</i> to disable any filtering
      */
