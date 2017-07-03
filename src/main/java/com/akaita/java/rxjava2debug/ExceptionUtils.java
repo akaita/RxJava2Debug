@@ -17,13 +17,14 @@
 package com.akaita.java.rxjava2debug;
 
 import io.reactivex.annotations.NonNull;
+import io.reactivex.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
 
 class ExceptionUtils {
 
-    static Throwable setRootCause(@NonNull Throwable throwable, @NonNull Throwable rootCause) {
+    static Throwable setRootCause(@NonNull Throwable throwable, @NonNull Throwable rootCause, @Nullable String[] basePackages) {
         if (throwable == null){
             return null;
         }
@@ -32,8 +33,13 @@ class ExceptionUtils {
         }
 
         List<Throwable> causes = listCauses(throwable);
-        causes.add(rootCause);
-        return collapseCauses(causes);
+        if (basePackages != null
+                && StackTraceUtils.anyContains(causes, basePackages)) {
+            return throwable;
+        } else {
+            causes.add(rootCause);
+            return collapseCauses(causes);
+        }
     }
 
     private static @NonNull

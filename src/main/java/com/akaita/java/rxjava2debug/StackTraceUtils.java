@@ -37,15 +37,17 @@ class StackTraceUtils {
      * @return StackTrace, filtered so a app-specific line is at the top of it
      */
     @NonNull
-    static StackTraceElement[] parseStackTrace(@NonNull RxJavaAssemblyException exception, @NonNull String basePackageName) {
+    static StackTraceElement[] parseStackTrace(@NonNull RxJavaAssemblyException exception, @Nullable String[] basePackages) {
         String[] lines = exception.stacktrace()
                 .split(NEW_LINE_REGEX);
 
         List<StackTraceElement> stackTrace = new ArrayList<StackTraceElement>();
-        boolean appSpecificFound = false;
+        boolean filterIn = false;
         for (String line : lines) {
-            appSpecificFound = appSpecificFound || line.contains(basePackageName);
-            if (appSpecificFound) {
+            filterIn = filterIn
+                    || basePackages == null
+                    || startsWithAny(line, basePackages);
+            if (filterIn) {
                 StackTraceElement element = parseStackTraceLine(line);
                 if (element != null) {
                     stackTrace.add(element);
@@ -54,6 +56,25 @@ class StackTraceUtils {
         }
 
         return stackTrace.toArray(new StackTraceElement[0]);
+    }
+
+    static boolean startsWithAny(@NonNull String input, @NonNull String[] matchers) {
+        for (String matcher :
+                matchers) {
+            if (input.startsWith("at "+matcher) || input.startsWith(matcher)) return true;
+        }
+        return false;
+    }
+
+    static boolean anyContains(List<Throwable> causes, @NonNull String[] basePackages) {
+        for (Throwable cause : causes) {
+            StackTraceElement[] stackTrace = cause.getStackTrace();
+            for (StackTraceElement element : stackTrace) {
+                if (startsWithAny(element.getClassName(), basePackages)) return true;
+            }
+        }
+
+        return false;
     }
 
     /**

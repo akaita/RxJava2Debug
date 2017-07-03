@@ -18,18 +18,26 @@ package com.akaita.java.rxjava2debug;
 
 import hu.akarnokd.rxjava2.debug.RxJavaAssemblyException;
 import hu.akarnokd.rxjava2.debug.RxJavaAssemblyTracking;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.annotations.Nullable;
+
+import java.util.List;
 
 import static com.akaita.java.rxjava2debug.ExceptionUtils.setRootCause;
 import static com.akaita.java.rxjava2debug.StackTraceUtils.parseStackTrace;
 
 public class RxJava2Debug {
-    private static String BASE_APP_PACKAGE_NAME = "com.akaita.fgas";
+    private @Nullable
+    static String[] basePackages;
 
     /**
      * Enable a system to collect information about RxJava's execution to provide a more meaningful StackTrace in case of crash<br/>
      * <b>Beware:</b> Any crash-reporting handler should be set up <i>before</i> calling this method
+     * @param basePackageNames List of base package names of your code, so the created stacktrace will have one of those on its top<br/>
+     *                         <i>null</i> to disable any filtering
      */
-    public static void enableRxJava2AssemblyTracking() {
+    public static void enableRxJava2AssemblyTracking(@Nullable String[] basePackageNames) {
+        basePackages = basePackageNames;
         RxJavaAssemblyTracking.enable();
         setRxJavaAssemblyHandler();
     }
@@ -54,10 +62,10 @@ public class RxJava2Debug {
 
                 RxJavaAssemblyException assembledException = RxJavaAssemblyException.find(e);
                 if (assembledException != null) {
-                    StackTraceElement[] clearStack = parseStackTrace(assembledException, BASE_APP_PACKAGE_NAME);
+                    StackTraceElement[] clearStack = parseStackTrace(assembledException, basePackages);
                     Throwable clearException = new Throwable();
                     clearException.setStackTrace(clearStack);
-                    toThrow = setRootCause(e, clearException);
+                    toThrow = setRootCause(e, clearException, basePackages);
                 }
 
                 previousDefaultHandler.uncaughtException(t, toThrow);
