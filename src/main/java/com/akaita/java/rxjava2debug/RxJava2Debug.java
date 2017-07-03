@@ -35,6 +35,14 @@ public class RxJava2Debug {
     }
 
     /**
+     * Disable the collection of more information about RxJava's execution<br/>
+     * Information collected before calling this method will still be reported
+     */
+    public static void disableRxJava2AssemblyTracking() {
+        RxJavaAssemblyTracking.disable();
+    }
+
+    /**
      * Set handler to intercept an exception, improve the StackTrace of RxJava-related ones and rethrow let the exception go through
      */
     private static void setRxJavaAssemblyHandler() {
