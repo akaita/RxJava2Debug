@@ -24,7 +24,7 @@ RxJava 2.1.0+
 
 # Features
 
-  - [StackTrace generation](#stacktrace-manipulation)
+  - [StackTrace generation](#stacktrace-generation)
   - [StackTrace filtering](#stacktrace-filtering)
 
 ## StackTrace generation
@@ -40,7 +40,7 @@ Config:
  
 Example (pointing to my own faulty code in `com.akaita.fgas.activities.TopActivity.onResume(TopActivity.java:205)`):
 
-```
+```java
 FATAL EXCEPTION: main
 Process: com.akaita.fgas.debug, PID: 22538
 java.lang.Throwable: The mapper function returned a null value.
@@ -81,7 +81,7 @@ Caused by: java.lang.Throwable
 
 Instead of the obscure:
 
-```
+```java
 FATAL EXCEPTION: main
 Process: com.akaita.fgas.debug, PID: 27300
 io.reactivex.exceptions.OnErrorNotImplementedException: The mapper function returned a null value.
@@ -131,7 +131,7 @@ RxJava2Debug.enableRxJava2AssemblyTracking(new String[]{"com.akaita.fgas", "com.
 
 Result: 
 
-```
+```java
 FATAL EXCEPTION: main
 Process: com.akaita.fgas.debug, PID: 22538
 java.lang.Throwable: The mapper function returned a null value.
