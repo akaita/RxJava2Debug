@@ -13,6 +13,12 @@ repositories {
 ```
 
 ```groovy
+repositories {
+    mavenCentral()
+}
+```
+
+```groovy
 dependencies {
     compile 'com.akaita.java:rxjava2-debug:1.1.0'
 }
