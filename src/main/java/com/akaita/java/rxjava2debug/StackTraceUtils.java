@@ -67,17 +67,6 @@ class StackTraceUtils {
         return false;
     }
 
-    static boolean anyContains(List<Throwable> causes, @NonNull String[] basePackages) {
-        for (Throwable cause : causes) {
-            StackTraceElement[] stackTrace = cause.getStackTrace();
-            for (StackTraceElement element : stackTrace) {
-                if (startsWithAny(element.getClassName(), basePackages)) return true;
-            }
-        }
-
-        return false;
-    }
-
     /**
      * Parse string containing a <i>single line</i> of a StackTrace
      *

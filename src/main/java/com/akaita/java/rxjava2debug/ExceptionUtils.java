@@ -33,13 +33,8 @@ class ExceptionUtils {
         }
 
         List<Throwable> causes = listCauses(throwable);
-        if (basePackages != null
-                && StackTraceUtils.anyContains(causes, basePackages)) {
-            return throwable;
-        } else {
-            causes.add(rootCause);
-            return collapseCauses(causes);
-        }
+        causes.add(rootCause);
+        return collapseCauses(causes);
     }
 
     private static @NonNull
