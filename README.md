@@ -1,5 +1,7 @@
 # RxJava2Debug
 
+[ ![Download](https://api.bintray.com/packages/akaita/java/rxjava2-debug/images/download.svg) ](https://bintray.com/akaita/java/rxjava2-debug/_latestVersion)
+
 A library to make StackTraces involving RxJava2 more meaningful (they will always point to your code!). 
 
 # Releases
