@@ -20,7 +20,7 @@ repositories {
 
 ```groovy
 dependencies {
-    compile 'com.akaita.java:rxjava2-debug:1.1.0'
+    compile 'com.akaita.java:rxjava2-debug:1.2.0'
 }
 ```
 
