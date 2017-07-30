@@ -28,6 +28,35 @@ dependencies {
 
 RxJava 2.1.0+
 
+# API
+
+Start collecting information about RxJava's execution to provide a more meaningful StackTrace in case of crash  
+<b>Beware:</b> Any crash-reporting handler should be set up <i>before</i> calling this method
+```java
+void enableRxJava2AssemblyTracking()
+```
+
+Start collecting filtered information about RxJava's execution to provide a more meaningful StackTrace in case of crash  
+<b>Beware:</b> Any crash-reporting handler should be set up <i>before</i> calling this method
+
+```java
+void enableRxJava2AssemblyTracking(@Nullable String[] basePackageNames)
+```
+
+Disable the collection of more information about RxJava's execution  
+Information collected before calling this method will still be reported
+
+```java
+void disableRxJava2AssemblyTracking()
+```
+
+
+Obtain a copy of the original Throwable with an extended StackTrace
+
+```java
+@Nullable Throwable getEnhancedStackTrace(Throwable originalException)
+```
+
 # Features
 
   - [StackTrace generation](#stacktrace-generation)
