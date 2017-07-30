@@ -59,6 +59,25 @@ public class RxJava2Debug {
     }
 
     /**
+     * Obtain a copy of the original Throwable with an extended StackTrace
+     * @param original Original Throwable
+     * @return new Throwable with enhanced StackTrace if information was found. <i>null</i> otherwise
+     */
+    public static @Nullable Throwable getEnhancedStackTrace(Throwable original) {
+        Throwable enhanced = original;
+
+        RxJavaAssemblyException assembledException = RxJavaAssemblyException.find(original);
+        if (assembledException != null) {
+            StackTraceElement[] clearStack = parseStackTrace(assembledException, basePackages);
+            Throwable clearException = new Throwable();
+            clearException.setStackTrace(clearStack);
+            enhanced = setRootCause(original, clearException, basePackages);
+        }
+
+        return enhanced;
+    }
+
+    /**
      * Set handler to intercept an exception, improve the StackTrace of RxJava-related ones and rethrow let the exception go through
      */
     private static void setRxJavaAssemblyHandler() {
@@ -66,17 +85,13 @@ public class RxJava2Debug {
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
-                Throwable toThrow = e;
+                Throwable enhancedStackTrace = getEnhancedStackTrace(e);
 
-                RxJavaAssemblyException assembledException = RxJavaAssemblyException.find(e);
-                if (assembledException != null) {
-                    StackTraceElement[] clearStack = parseStackTrace(assembledException, basePackages);
-                    Throwable clearException = new Throwable();
-                    clearException.setStackTrace(clearStack);
-                    toThrow = setRootCause(e, clearException, basePackages);
+                if (enhancedStackTrace != null) {
+                    previousDefaultHandler.uncaughtException(t, enhancedStackTrace);
+                } else {
+                    previousDefaultHandler.uncaughtException(t, e);
                 }
-
-                previousDefaultHandler.uncaughtException(t, toThrow);
             }
         });
     }
