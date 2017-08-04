@@ -4,18 +4,25 @@
 
 A library to make StackTraces involving RxJava2 more meaningful (they will always point to your code!). 
 
+# Rationale
+
+If you use RxJava2, you know the pain of debugging exceptions generated somwhere across the stream, in another thread, in a nested stream, ... The StackTrace provided by RxJava2 will tell you almost nothing. Even more, if you are using systems like Crashlytics to collect reports for and Android app, most RxJava-related crashes will be reported as a single error instance (omg, no way to fix that).
+
+This library was created from the need to debug such situations when they happen in Android apps; even more, I needed to have a clear and precise report in Crashlytics for each distinct exception.
+
+1. If you handle exceptions generated in RxJava2 streams, you can query RxJava2Debug to obtain an extended StackTrace pointing to the exact line of code that created the issue.
+
+2. If you let exceptions generated in RxJava2 streams crash your app, RxJava2Debug will automatically extend the default StackTrace.
+
+3. If you let exceptions generated in RxJava2 streams crash your app and you configure RxJava2Debug with your package-names, RxJava2Debug will make sure you get unique reports for each issue (to Crashlytics, or whichever reporting system you use). 
+
+
 # Releases
 
-**gradle**
-
 ```groovy
 repositories {
+    // You can use jcenter() or mavenCentral(), any of them will work great
     jcenter()
-}
-```
-
-```groovy
-repositories {
     mavenCentral()
 }
 ```
