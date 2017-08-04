@@ -39,12 +39,12 @@ task uploadMavenCentral(type:Upload, dependsOn: signArchives) {
                 // Closure to configure all the POM with extra info, common to all projects
                 pom.project {
                     name "${project.name}"
-                    description "${project.name} developed by David Karnok"
+                    description "${project.name} developed by Mikel Pascual"
                     developers {
                         developer {
-                            id 'akarnokd'
-                            name 'David Karnok'
-                            email 'akarnokd@gmail.com'
+                            id 'akaita'
+                            name 'Mikel Pascual'
+                            email 'mikel@akaita.com'
                         }
                     }
                     licenses {
@@ -54,15 +54,15 @@ task uploadMavenCentral(type:Upload, dependsOn: signArchives) {
                             distribution 'repo'
                         }
                     }
-                    url "https://github.com/akarnokd/${rootProject.githubProjectName}"
+                    url "https://github.com/akaita/${rootProject.githubProjectName}"
                     scm {
-                        connection "scm:git:git@github.com:akarnokd/${rootProject.githubProjectName}.git"
-                        url "scm:git:git@github.com:akarnokd/${rootProject.githubProjectName}.git"
-                        developerConnection "scm:git:git@github.com:akarnokd/${rootProject.githubProjectName}.git"
+                        connection "scm:git:git@github.com:akaita/${rootProject.githubProjectName}.git"
+                        url "scm:git:git@github.com:akaita/${rootProject.githubProjectName}.git"
+                        developerConnection "scm:git:git@github.com:akaita/${rootProject.githubProjectName}.git"
                     }
                     issueManagement {
                         system 'github'
-                        url "https://github.com/akarnokd/${rootProject.githubProjectName}/issues"
+                        url "https://github.com/akaita/${rootProject.githubProjectName}/issues"
                     }
                 }
             }
