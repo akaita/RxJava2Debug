@@ -49,6 +49,47 @@ dependencies {
 
 RxJava 2.1.0+
 
+# Usage
+
+Just enable RxJava2Debug as soon as possible. In Android, for example:
+
+```java
+public class MyApplication extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        
+        Fabric.with(this, new Crashlytics());
+        
+        // Enable RxJava assembly stack collection, to make RxJava crash reports clear and unique
+        // Make sure this is called AFTER setting up any Crash reporting mechanism as Crashlytics
+        RxJava2Debug.enableRxJava2AssemblyTracking(new String[]{"com.example.myapp", "com.example.mylibrary"});
+    }
+}
+```
+
+This will:
+
+ - Enhance stack traces of all RxJava2-related crashes making sure they contain a reference to the method that generated the first event in the Rx pipeline
+ - Make sure that Stack Traces contain a reference to your code (some class in `com.example.myapp` or `com.example.mylibrary`)
+ - Make sure that crash reports in Crashlytics are actually different for each pipeline (avoid bundling every RXJava error into one reports)
+ 
+You will now also be able to obtain an enhanced Stack Trace even when you implement `onError` (really, you should implement it):
+ 
+```java
+responseSubject
+    .subscribe(
+        responseObservable -> handleResponse(responseObservable),
+        throwable -> RxJava2Debug.getEnhancedStackTrace(throwable)
+    );
+```
+
+| Without RxJava2Debug | With RxJava2Debug |
+| - | - |
+| ![raw stack trace](https://github.com/akaita/RxJava2Debug/blob/master/screenshots/raw_stack_trace.png "Raw Stack Trace") | ![enhanced stack trace](https://github.com/akaita/RxJava2Debug/blob/master/screenshots/enhanced_stack_trace.png "Enhanced Stack Trace") |
+| ![raw crash report](https://github.com/akaita/RxJava2Debug/blob/master/screenshots/raw_crash_report.png "Raw Crash Report") | ![enhanced crash report](https://github.com/akaita/RxJava2Debug/blob/master/screenshots/enhanced_crash_report.png "Enhanced Crash Report") |
+
 # API
 
 Start collecting information about RxJava's execution to provide a more meaningful StackTrace in case of crash  
