@@ -21,17 +21,25 @@ This library was created from the need to debug such situations when they happen
 3. If you let exceptions generated in RxJava2 streams crash your app and you configure RxJava2Debug with your package-names, RxJava2Debug will make sure you get unique reports for each issue (to Crashlytics, or whichever reporting system you use). 
 
 
-# Releases
+# Installation
 
+Using *Maven Central* :
 ```groovy
 repositories {
-    // You can use jcenter() or mavenCentral(), any of them will work great
-    jcenter()
     mavenCentral()
+}
+
+dependencies {
+    compile 'com.akaita.java:rxjava2-debug:1.2.0'
 }
 ```
 
+Using *JCenter*:
 ```groovy
+repositories {
+    jcenter()
+}
+
 dependencies {
     compile 'com.akaita.java:rxjava2-debug:1.2.0'
 }
