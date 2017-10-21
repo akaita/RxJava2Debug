@@ -57,7 +57,11 @@ class ExceptionUtils {
         Throwable topThrowable = null;
         for (int i=causes.size()-1 ; i>=0 ; i--) {
             topThrowable = new Throwable(causes.get(i).getMessage(), topThrowable);
-            topThrowable.setStackTrace(causes.get(i).getStackTrace());
+            if (causes.get(i).getStackTrace() != null) {
+                // This array should never be null, if everybody follows the Java spec
+                // Sometimes this part of the spec is not followed, so we better protect ourselves
+                topThrowable.setStackTrace(causes.get(i).getStackTrace());
+            }
         }
 
         return topThrowable;
