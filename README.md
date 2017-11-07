@@ -1,4 +1,4 @@
-# RxJava2Debug
+# RxJava2Debug [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Quickly%20find%20out%20the%20source%20issue%20causing%20your%20RxJava2%20stream%20fail&url=https://github.com/akaita/RxJava2Debug&via=github&hashtags=rxjava,debug,fixthatcrash)
 
 [![License](https://img.shields.io/badge/License%20-Apache%202-337ab7.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Maven](https://img.shields.io/badge/%20Maven%20-1.2.1-5bc0de.svg) ](https://mvnrepository.com/artifact/com.akaita.java/rxjava2-debug/1.2.1) 
