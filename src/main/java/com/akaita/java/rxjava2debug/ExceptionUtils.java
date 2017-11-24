@@ -24,7 +24,7 @@ import java.util.List;
 
 class ExceptionUtils {
 
-    static Throwable setRootCause(@NonNull Throwable throwable, @NonNull Throwable rootCause, @Nullable String[] basePackages) {
+    static Throwable setRootCause(@NonNull Throwable throwable, @NonNull Throwable rootCause) {
         if (throwable == null){
             return null;
         }

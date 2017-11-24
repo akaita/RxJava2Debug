@@ -71,7 +71,7 @@ public class RxJava2Debug {
             StackTraceElement[] clearStack = parseStackTrace(assembledException, basePackages);
             Throwable clearException = new Throwable();
             clearException.setStackTrace(clearStack);
-            enhanced = setRootCause(original, clearException, basePackages);
+            enhanced = setRootCause(original, clearException);
         }
 
         return enhanced;
