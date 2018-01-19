@@ -61,9 +61,9 @@ public class RxJava2Debug {
     /**
      * Obtain a copy of the original Throwable with an extended StackTrace
      * @param original Original Throwable
-     * @return new Throwable with enhanced StackTrace if information was found. <i>null</i> otherwise
+     * @return new Throwable with enhanced StackTrace if information was found. <i>Original Throwable</i> otherwise
      */
-    public static @Nullable Throwable getEnhancedStackTrace(Throwable original) {
+    public static @NonNull Throwable getEnhancedStackTrace(@NonNull Throwable original) {
         Throwable enhanced = original;
 
         RxJavaAssemblyException assembledException = RxJavaAssemblyException.find(original);
@@ -86,12 +86,7 @@ public class RxJava2Debug {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
                 Throwable enhancedStackTrace = getEnhancedStackTrace(e);
-
-                if (enhancedStackTrace != null) {
-                    previousDefaultHandler.uncaughtException(t, enhancedStackTrace);
-                } else {
-                    previousDefaultHandler.uncaughtException(t, e);
-                }
+                previousDefaultHandler.uncaughtException(t, enhancedStackTrace);
             }
         });
     }

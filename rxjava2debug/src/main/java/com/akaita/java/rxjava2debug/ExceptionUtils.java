@@ -25,13 +25,6 @@ import java.util.List;
 class ExceptionUtils {
 
     static Throwable setRootCause(@NonNull Throwable throwable, @NonNull Throwable rootCause) {
-        if (throwable == null){
-            return null;
-        }
-        if (rootCause == null) {
-            return throwable;
-        }
-
         List<Throwable> causes = listCauses(throwable);
         causes.add(rootCause);
         return collapseCauses(causes);
