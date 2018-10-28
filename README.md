@@ -1,10 +1,10 @@
 # RxJava2Debug [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Quickly%20find%20out%20the%20source%20issue%20causing%20your%20RxJava2%20stream%20fail&url=https://github.com/akaita/RxJava2Debug&via=github&hashtags=rxjava,debug,fixthatcrash)
 
 [![License](https://img.shields.io/badge/License%20-Apache%202-337ab7.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Maven](https://img.shields.io/badge/%20Maven%20-1.2.2-5bc0de.svg) ](https://mvnrepository.com/artifact/com.akaita.java/rxjava2-debug/1.2.2)
-[![Jcenter](https://img.shields.io/badge/%20Jcenter%20-1.2.2-5bc0de.svg) ](https://bintray.com/akaita/java/rxjava2-debug/_latestVersion)
+[![Maven](https://img.shields.io/badge/%20Maven%20-1.3.0-5bc0de.svg) ](https://mvnrepository.com/artifact/com.akaita.java/rxjava2-debug/1.3.0)
+[![Jcenter](https://img.shields.io/badge/%20Jcenter%20-1.3.0-5bc0de.svg) ](https://bintray.com/akaita/java/rxjava2-debug/_latestVersion)
 [![Arsenal](https://img.shields.io/badge/%20Arsenal%20-%20RxJava2Debug%20-4cae4c.svg?style=flat)](https://android-arsenal.com/details/1/6027)
-[![Methods](https://img.shields.io/badge/%20Methods%20%7C%20Size%20-%20239%20%7C%2040%20KB-d9534f.svg)](http://www.methodscount.com/?lib=com.akaita.java%3Arxjava2-debug%3A1.2.2)
+[![Methods](https://img.shields.io/badge/%20Methods%20%7C%20Size%20-%20239%20%7C%2040%20KB-d9534f.svg)](http://www.methodscount.com/?lib=com.akaita.java%3Arxjava2-debug%3A1.3.0)
 
 A library to make StackTraces involving RxJava2 more meaningful (they will always point to your code!). 
 
@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.akaita.java:rxjava2-debug:1.2.2'
+    compile 'com.akaita.java:rxjava2-debug:1.3.0'
 }
 ```
 
@@ -41,13 +41,15 @@ repositories {
 }
 
 dependencies {
-    compile 'com.akaita.java:rxjava2-debug:1.2.2'
+    compile 'com.akaita.java:rxjava2-debug:1.3.0'
 }
 ```
 
-# Requirements
+# Compatibility
 
-RxJava 2.1.0+
+RxJava2Debug 1.3.0: RxJava 2.2.1+
+
+RxJava2Debug 1.2.2: RxJava 2.1.0 to 2.2.0
 
 # Usage
 
@@ -259,4 +261,4 @@ Instead of getting a multitude of reports involving RxJava2 into a single report
 
 This library is using a subset of classes from [akarnokd's RxJava2Extensions](https://github.com/akarnokd/RxJava2Extensions). 
 
-RxJava2Extensions takes about `kb` and contains `` methods. RxJava2Debug takes about `38kb` and contains `` methods.
+RxJava2Extensions takes about `1mb` and contains `5231` methods. RxJava2Debug takes about `38kb` and contains `239` methods.
