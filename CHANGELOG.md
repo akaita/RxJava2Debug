@@ -16,8 +16,8 @@
 ## v1.2.0 2017/07/30
 * Add ability to provide clear stack-traces for handled exceptions
 
-## v1.1.1 2017/07/03
+## v1.1.0 2017/07/03
 * Add option for empty filters
 
-## v1.1.0 2017/07/03
+## v1.0.0 2017/07/03
 * Initial public release
