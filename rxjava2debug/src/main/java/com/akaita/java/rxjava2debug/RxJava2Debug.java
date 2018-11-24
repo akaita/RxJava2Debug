@@ -25,8 +25,8 @@ import static com.akaita.java.rxjava2debug.ExceptionUtils.setRootCause;
 import static com.akaita.java.rxjava2debug.StackTraceUtils.parseStackTrace;
 
 public class RxJava2Debug {
-    private @Nullable
-    static String[] basePackages;
+    @Nullable
+    private static String[] basePackages;
 
     /**
      * Start collecting information about RxJava's execution to provide a more meaningful StackTrace in case of crash<br/>
@@ -39,6 +39,7 @@ public class RxJava2Debug {
     /**
      * Start collecting filtered information about RxJava's execution to provide a more meaningful StackTrace in case of crash<br/>
      * <b>Beware:</b> Any crash-reporting handler should be set up <i>before</i> calling this method
+     *
      * @param basePackageNames List of base package names of your code, so the created stacktrace will have one of those on its top<br/>
      *                         <i>null</i> to disable any filtering
      */
@@ -58,10 +59,12 @@ public class RxJava2Debug {
 
     /**
      * Obtain a copy of the original Throwable with an extended StackTrace
+     *
      * @param original Original Throwable
      * @return new Throwable with enhanced StackTrace if information was found. <i>Original Throwable</i> otherwise
      */
-    public static @NonNull Throwable getEnhancedStackTrace(@NonNull Throwable original) {
+    @NonNull
+    public static Throwable getEnhancedStackTrace(@NonNull Throwable original) {
         Throwable enhanced = original;
 
         RxJavaAssemblyException assembledException = RxJavaAssemblyException.find(original);

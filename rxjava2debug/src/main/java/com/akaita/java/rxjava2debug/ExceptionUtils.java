@@ -30,8 +30,8 @@ class ExceptionUtils {
         return collapseCauses(causes);
     }
 
-    private static @NonNull
-    List<Throwable> listCauses(@NonNull Throwable throwable) {
+    @NonNull
+    private static List<Throwable> listCauses(@NonNull Throwable throwable) {
         LinkedList<Throwable> causes = new LinkedList<Throwable>();
         Throwable cause = throwable.getCause();
         while (cause != null && !causes.contains(cause)) {
@@ -41,14 +41,14 @@ class ExceptionUtils {
         return causes;
     }
 
-    private static @NonNull
-    Throwable collapseCauses(@NonNull List<Throwable> causes) {
+    @NonNull
+    private static Throwable collapseCauses(@NonNull List<Throwable> causes) {
         if (causes.size() == 0) {
             return new RuntimeException("Empty list of causes");
         }
 
         Throwable topThrowable = null;
-        for (int i=causes.size()-1 ; i>=0 ; i--) {
+        for (int i = causes.size() - 1; i >= 0; i--) {
             topThrowable = new Throwable(causes.get(i).getMessage(), topThrowable);
             if (causes.get(i).getStackTrace() != null) {
                 // This array should never be null, if everybody follows the Java spec
