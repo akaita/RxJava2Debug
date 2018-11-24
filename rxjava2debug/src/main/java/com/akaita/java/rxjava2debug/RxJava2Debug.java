@@ -70,7 +70,9 @@ public class RxJava2Debug {
         RxJavaAssemblyException assembledException = RxJavaAssemblyException.find(original);
         if (assembledException != null) {
             StackTraceElement[] clearStack = parseStackTrace(assembledException, basePackages);
-            Throwable clearException = new Throwable();
+            String enhancedMessage = original.toString();
+
+            Throwable clearException = new Throwable(enhancedMessage);
             clearException.setStackTrace(clearStack);
             enhanced = setRootCause(original, clearException);
         }

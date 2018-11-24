@@ -17,7 +17,6 @@
 package com.akaita.java.rxjava2debug;
 
 import io.reactivex.annotations.NonNull;
-import io.reactivex.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -27,7 +26,7 @@ class ExceptionUtils {
     static Throwable setRootCause(@NonNull Throwable throwable, @NonNull Throwable rootCause) {
         List<Throwable> causes = listCauses(throwable);
         causes.add(rootCause);
-        return collapseCauses(causes);
+        return reverseAndCollapseCauses(causes);
     }
 
     @NonNull
@@ -42,14 +41,22 @@ class ExceptionUtils {
     }
 
     @NonNull
-    private static Throwable collapseCauses(@NonNull List<Throwable> causes) {
+    private static Throwable reverseAndCollapseCauses(@NonNull List<Throwable> causes) {
         if (causes.size() == 0) {
             return new RuntimeException("Empty list of causes");
         }
 
+        String originalEnhancedMessage = causes.get(causes.size() - 1).getLocalizedMessage();
+        String topMessage = "caused by " + originalEnhancedMessage;
+
         Throwable topThrowable = null;
         for (int i = causes.size() - 1; i >= 0; i--) {
-            topThrowable = new Throwable(causes.get(i).getMessage(), topThrowable);
+            if (i > 0) {
+                topThrowable = new Throwable(causes.get(i).getMessage(), topThrowable);
+            } else {
+                topThrowable = new Throwable(topMessage, topThrowable);
+            }
+
             if (causes.get(i).getStackTrace() != null) {
                 // This array should never be null, if everybody follows the Java spec
                 // Sometimes this part of the spec is not followed, so we better protect ourselves
