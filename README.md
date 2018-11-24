@@ -47,7 +47,7 @@ dependencies {
 
 # Compatibility
 
-RxJava2Debug 1.3.0: RxJava 2.2.1+
+RxJava2Debug 1.3.0+: RxJava 2.2.1+
 
 RxJava2Debug 1.2.2: RxJava 2.1.0 to 2.2.0
 
