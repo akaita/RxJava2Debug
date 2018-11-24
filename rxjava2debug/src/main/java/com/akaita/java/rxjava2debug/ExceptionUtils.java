@@ -16,6 +16,7 @@
 
 package com.akaita.java.rxjava2debug;
 
+import com.akaita.java.rxjava2debug.extensions.RxJavaAssemblyException;
 import io.reactivex.annotations.NonNull;
 
 import java.util.LinkedList;
@@ -46,8 +47,12 @@ class ExceptionUtils {
             return new RuntimeException("Empty list of causes");
         }
 
-        String originalEnhancedMessage = causes.get(causes.size() - 1).getLocalizedMessage();
-        String topMessage = "caused by " + originalEnhancedMessage;
+        String topMessage;
+        if (causes.get(0) instanceof RxJavaAssemblyException) {
+            topMessage = "caused by " + causes.get(causes.size() - 1).getLocalizedMessage();
+        } else {
+            topMessage = "caused by " + causes.get(0).getClass().getName() + ": " + causes.get(0).getLocalizedMessage();
+        }
 
         Throwable topThrowable = null;
         for (int i = causes.size() - 1; i >= 0; i--) {
