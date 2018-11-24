@@ -23,25 +23,33 @@ import android.util.Log
 import com.akaita.java.rxjava2debug.RxJava2Debug
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val disposables = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        toggleAssembly.setOnCheckedChangeListener({ _, isChecked -> toggleRxJava2Debug(isChecked) })
+        toggleAssembly.setOnCheckedChangeListener { _, isChecked -> toggleRxJava2Debug(isChecked) }
         handledException.setOnClickListener { generateHandledException() }
         unhandledException.setOnClickListener { generateUnhandledException() }
+    }
+
+    override fun onDestroy() {
+        disposables.clear()
+        super.onDestroy()
     }
 
     /**
      * Toggle RxJava2Debug on and off.
      */
-    private fun toggleRxJava2Debug( enable: Boolean ) {
+    private fun toggleRxJava2Debug(enable: Boolean) {
         if (enable) {
             RxJava2Debug.enableRxJava2AssemblyTracking(ExampleApplication.MY_CODE_PACKAGES)
         } else {
@@ -57,19 +65,21 @@ class MainActivity : AppCompatActivity() {
      * It handles the exception by printing it in LogCat and the screen, so the developer can fix it
      */
     private fun generateHandledException() {
-        Single.just("event")
-                .subscribeOn(Schedulers.computation())
-                .doOnEvent { _, _ ->  Log.i("HandledException", "Start") }
-                .map { null }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { Log.i("HandledException", "Subscribe") },
-                        { t: Throwable ->
-                            val enhancedStackTrace = RxJava2Debug.getEnhancedStackTrace(t)
-                            Log.e("HandledException", "Error", enhancedStackTrace)
-                            displayStackTrace(enhancedStackTrace)
-                        }
-                )
+        disposables.add(
+                Single.just("event")
+                        .subscribeOn(Schedulers.computation())
+                        .doOnEvent { _, _ -> Log.i("HandledException", "Start") }
+                        .map { null }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                { Log.i("HandledException", "Subscribe") },
+                                { t: Throwable ->
+                                    val enhancedStackTrace = RxJava2Debug.getEnhancedStackTrace(t)
+                                    Log.e("HandledException", "Error", enhancedStackTrace)
+                                    displayStackTrace(enhancedStackTrace)
+                                }
+                        )
+        )
     }
 
     /**
@@ -78,12 +88,14 @@ class MainActivity : AppCompatActivity() {
      * No implementation for `onError` is provided, so the exception will be thrown and it will eventually crash the app O_o
      */
     private fun generateUnhandledException() {
-        Single.just("event")
-                .subscribeOn(Schedulers.computation())
-                .doOnEvent { _, _ ->  Log.i("HandledException", "Start") }
-                .map { null }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(Consumer { Log.i("UnhandledException", "Subscribe") })
+        disposables.add(
+                Single.just("event")
+                        .subscribeOn(Schedulers.computation())
+                        .doOnEvent { _, _ -> Log.i("HandledException", "Start") }
+                        .map { null }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(Consumer { Log.i("UnhandledException", "Subscribe") })
+        )
     }
 
     /**
@@ -93,6 +105,7 @@ class MainActivity : AppCompatActivity() {
         textView.text = Html.fromHtml(
                 throwable
                         ?.toHtml()
-                        ?.highlight(ExampleApplication.MY_CODE_PACKAGES) ?: "Something horrible happened!") //
+                        ?.highlight(ExampleApplication.MY_CODE_PACKAGES)
+                        ?: "Something horrible happened!") //
     }
 }
