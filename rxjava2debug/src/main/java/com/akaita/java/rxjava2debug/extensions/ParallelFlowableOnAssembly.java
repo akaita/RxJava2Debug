@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package hu.akarnokd.rxjava2.debug;
+package com.akaita.java.rxjava2debug.extensions;
 
 import org.reactivestreams.Subscriber;
 
-import hu.akarnokd.rxjava2.debug.FlowableOnAssembly.*;
+import com.akaita.java.rxjava2debug.extensions.FlowableOnAssembly.*;
 import io.reactivex.internal.fuseable.ConditionalSubscriber;
 import io.reactivex.parallel.ParallelFlowable;
 

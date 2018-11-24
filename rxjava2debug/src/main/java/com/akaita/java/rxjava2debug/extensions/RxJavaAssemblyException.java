@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package hu.akarnokd.rxjava2.debug;
+package com.akaita.java.rxjava2debug.extensions;
 
 import java.util.*;
 

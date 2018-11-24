@@ -14,42 +14,42 @@
  * limitations under the License.
  */
 
-package hu.akarnokd.rxjava2.debug;
+package com.akaita.java.rxjava2debug.extensions;
 
 import io.reactivex.*;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 
 /**
- * Wraps a MaybeSource and inject the assembly info.
+ * Wraps a Publisher and inject the assembly info.
  *
  * @param <T> the value type
  */
-final class MaybeOnAssembly<T> extends Maybe<T> {
+final class SingleOnAssembly<T> extends Single<T> {
 
-    final MaybeSource<T> source;
+    final SingleSource<T> source;
 
     final RxJavaAssemblyException assembled;
 
-    MaybeOnAssembly(MaybeSource<T> source) {
+    SingleOnAssembly(SingleSource<T> source) {
         this.source = source;
         this.assembled = new RxJavaAssemblyException();
     }
 
     @Override
-    protected void subscribeActual(MaybeObserver<? super T> s) {
-        source.subscribe(new OnAssemblyMaybeObserver<T>(s, assembled));
+    protected void subscribeActual(SingleObserver<? super T> s) {
+        source.subscribe(new OnAssemblySingleObserver<T>(s, assembled));
     }
 
-    static final class OnAssemblyMaybeObserver<T> implements MaybeObserver<T>, Disposable {
+    static final class OnAssemblySingleObserver<T> implements SingleObserver<T>, Disposable {
 
-        final MaybeObserver<? super T> actual;
+        final SingleObserver<? super T> actual;
 
         final RxJavaAssemblyException assembled;
 
         Disposable d;
 
-        OnAssemblyMaybeObserver(MaybeObserver<? super T> actual, RxJavaAssemblyException assembled) {
+        OnAssemblySingleObserver(SingleObserver<? super T> actual, RxJavaAssemblyException assembled) {
             this.actual = actual;
             this.assembled = assembled;
         }
@@ -71,11 +71,6 @@ final class MaybeOnAssembly<T> extends Maybe<T> {
         @Override
         public void onError(Throwable t) {
             actual.onError(assembled.appendLast(t));
-        }
-
-        @Override
-        public void onComplete() {
-            actual.onComplete();
         }
 
         @Override

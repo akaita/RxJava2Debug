@@ -14,34 +14,36 @@
  * limitations under the License.
  */
 
-package hu.akarnokd.rxjava2.debug;
+package com.akaita.java.rxjava2debug.extensions;
 
-import hu.akarnokd.rxjava2.debug.CompletableOnAssembly.OnAssemblyCompletableObserver;
+import com.akaita.java.rxjava2debug.extensions.MaybeOnAssembly.OnAssemblyMaybeObserver;
 import io.reactivex.*;
 import io.reactivex.internal.fuseable.ScalarCallable;
 
 /**
- * Wraps a CompletableSource and inject the assembly info.
+ * Wraps a MaybeSource and inject the assembly info.
+ *
+ * @param <T> the value type
  */
-final class CompletableOnAssemblyScalarCallable extends Completable implements ScalarCallable<Object> {
+final class MaybeOnAssemblyScalarCallable<T> extends Maybe<T> implements ScalarCallable<T> {
 
-    final CompletableSource source;
+    final MaybeSource<T> source;
 
     final RxJavaAssemblyException assembled;
 
-    CompletableOnAssemblyScalarCallable(CompletableSource source) {
+    MaybeOnAssemblyScalarCallable(MaybeSource<T> source) {
         this.source = source;
         this.assembled = new RxJavaAssemblyException();
     }
 
     @Override
-    protected void subscribeActual(CompletableObserver s) {
-        source.subscribe(new OnAssemblyCompletableObserver(s, assembled));
+    protected void subscribeActual(MaybeObserver<? super T> s) {
+        source.subscribe(new OnAssemblyMaybeObserver<T>(s, assembled));
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public Object call() {
-        return ((ScalarCallable<Object>)source).call();
+    public T call() {
+        return ((ScalarCallable<T>)source).call();
     }
 }

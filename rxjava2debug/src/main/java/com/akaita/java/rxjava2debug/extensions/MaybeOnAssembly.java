@@ -14,40 +14,42 @@
  * limitations under the License.
  */
 
-package hu.akarnokd.rxjava2.debug;
+package com.akaita.java.rxjava2debug.extensions;
 
 import io.reactivex.*;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 
 /**
- * Wraps a CompletableSource and inject the assembly info.
+ * Wraps a MaybeSource and inject the assembly info.
+ *
+ * @param <T> the value type
  */
-final class CompletableOnAssembly extends Completable {
+final class MaybeOnAssembly<T> extends Maybe<T> {
 
-    final CompletableSource source;
+    final MaybeSource<T> source;
 
     final RxJavaAssemblyException assembled;
 
-    CompletableOnAssembly(CompletableSource source) {
+    MaybeOnAssembly(MaybeSource<T> source) {
         this.source = source;
         this.assembled = new RxJavaAssemblyException();
     }
 
     @Override
-    protected void subscribeActual(CompletableObserver s) {
-        source.subscribe(new OnAssemblyCompletableObserver(s, assembled));
+    protected void subscribeActual(MaybeObserver<? super T> s) {
+        source.subscribe(new OnAssemblyMaybeObserver<T>(s, assembled));
     }
 
-    static final class OnAssemblyCompletableObserver implements CompletableObserver, Disposable {
+    static final class OnAssemblyMaybeObserver<T> implements MaybeObserver<T>, Disposable {
 
-        final CompletableObserver actual;
+        final MaybeObserver<? super T> actual;
 
         final RxJavaAssemblyException assembled;
 
         Disposable d;
 
-        OnAssemblyCompletableObserver(CompletableObserver actual, RxJavaAssemblyException assembled) {
+        OnAssemblyMaybeObserver(MaybeObserver<? super T> actual, RxJavaAssemblyException assembled) {
             this.actual = actual;
             this.assembled = assembled;
         }
@@ -59,6 +61,11 @@ final class CompletableOnAssembly extends Completable {
 
                 actual.onSubscribe(this);
             }
+        }
+
+        @Override
+        public void onSuccess(T value) {
+            actual.onSuccess(value);
         }
 
         @Override

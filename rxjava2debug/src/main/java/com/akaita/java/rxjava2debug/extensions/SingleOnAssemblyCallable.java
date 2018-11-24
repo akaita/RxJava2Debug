@@ -14,36 +14,43 @@
  * limitations under the License.
  */
 
-package hu.akarnokd.rxjava2.debug;
+package com.akaita.java.rxjava2debug.extensions;
 
-import hu.akarnokd.rxjava2.debug.ObservableOnAssembly.OnAssemblyObserver;
+import java.util.concurrent.Callable;
+
+import com.akaita.java.rxjava2debug.extensions.SingleOnAssembly.OnAssemblySingleObserver;
 import io.reactivex.*;
-import io.reactivex.internal.fuseable.ScalarCallable;
+import io.reactivex.exceptions.Exceptions;
 
 /**
- * Wraps a ObservableSource and inject the assembly info.
+ * Wraps a Publisher and inject the assembly info.
  *
  * @param <T> the value type
  */
-final class ObservableOnAssemblyScalarCallable<T> extends Observable<T> implements ScalarCallable<T> {
+final class SingleOnAssemblyCallable<T> extends Single<T> implements Callable<T> {
 
-    final ObservableSource<T> source;
+    final SingleSource<T> source;
 
     final RxJavaAssemblyException assembled;
 
-    ObservableOnAssemblyScalarCallable(ObservableSource<T> source) {
+    SingleOnAssemblyCallable(SingleSource<T> source) {
         this.source = source;
         this.assembled = new RxJavaAssemblyException();
     }
 
     @Override
-    protected void subscribeActual(Observer<? super T> s) {
-        source.subscribe(new OnAssemblyObserver<T>(s, assembled));
+    protected void subscribeActual(SingleObserver<? super T> s) {
+        source.subscribe(new OnAssemblySingleObserver<T>(s, assembled));
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public T call() {
-        return ((ScalarCallable<T>)source).call();
+    public T call() throws Exception {
+        try {
+            return ((Callable<T>)source).call();
+        } catch (Exception ex) {
+            Exceptions.throwIfFatal(ex);
+            throw (Exception)assembled.appendLast(ex);
+        }
     }
 }

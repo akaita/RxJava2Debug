@@ -21,6 +21,8 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.concurrent.*;
 
+import com.akaita.java.rxjava2debug.extensions.RxJavaAssemblyException;
+import com.akaita.java.rxjava2debug.extensions.RxJavaAssemblyTracking;
 import org.junit.Test;
 
 import io.reactivex.*;

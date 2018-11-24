@@ -14,31 +14,37 @@
  * limitations under the License.
  */
 
-package hu.akarnokd.rxjava2.debug;
+package com.akaita.java.rxjava2debug.extensions;
 
-import hu.akarnokd.rxjava2.debug.MaybeOnAssembly.OnAssemblyMaybeObserver;
-import io.reactivex.*;
-import io.reactivex.internal.fuseable.ScalarCallable;
+import org.reactivestreams.*;
+
+import com.akaita.java.rxjava2debug.extensions.FlowableOnAssembly.*;
+import io.reactivex.Flowable;
+import io.reactivex.internal.fuseable.*;
 
 /**
- * Wraps a MaybeSource and inject the assembly info.
+ * Wraps a Publisher and inject the assembly info.
  *
  * @param <T> the value type
  */
-final class MaybeOnAssemblyScalarCallable<T> extends Maybe<T> implements ScalarCallable<T> {
+final class FlowableOnAssemblyScalarCallable<T> extends Flowable<T> implements ScalarCallable<T> {
 
-    final MaybeSource<T> source;
+    final Publisher<T> source;
 
     final RxJavaAssemblyException assembled;
 
-    MaybeOnAssemblyScalarCallable(MaybeSource<T> source) {
+    FlowableOnAssemblyScalarCallable(Publisher<T> source) {
         this.source = source;
         this.assembled = new RxJavaAssemblyException();
     }
 
     @Override
-    protected void subscribeActual(MaybeObserver<? super T> s) {
-        source.subscribe(new OnAssemblyMaybeObserver<T>(s, assembled));
+    protected void subscribeActual(Subscriber<? super T> s) {
+        if (s instanceof ConditionalSubscriber) {
+            source.subscribe(new OnAssemblyConditionalSubscriber<T>((ConditionalSubscriber<? super T>)s, assembled));
+        } else {
+            source.subscribe(new OnAssemblySubscriber<T>(s, assembled));
+        }
     }
 
     @SuppressWarnings("unchecked")

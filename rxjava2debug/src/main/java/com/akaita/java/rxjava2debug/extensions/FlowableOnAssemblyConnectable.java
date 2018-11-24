@@ -14,33 +14,39 @@
  * limitations under the License.
  */
 
-package hu.akarnokd.rxjava2.debug;
+package com.akaita.java.rxjava2debug.extensions;
 
-import hu.akarnokd.rxjava2.debug.ObservableOnAssembly.OnAssemblyObserver;
-import io.reactivex.Observer;
+import org.reactivestreams.Subscriber;
+
+import com.akaita.java.rxjava2debug.extensions.FlowableOnAssembly.*;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.flowables.ConnectableFlowable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.observables.ConnectableObservable;
+import io.reactivex.internal.fuseable.ConditionalSubscriber;
 
 /**
- * Wraps a ObservableSource and inject the assembly info.
+ * Wraps a Publisher and inject the assembly info.
  *
  * @param <T> the value type
  */
-final class ObservableOnAssemblyConnectable<T> extends ConnectableObservable<T> {
+final class FlowableOnAssemblyConnectable<T> extends ConnectableFlowable<T> {
 
-    final ConnectableObservable<T> source;
+    final ConnectableFlowable<T> source;
 
     final RxJavaAssemblyException assembled;
 
-    ObservableOnAssemblyConnectable(ConnectableObservable<T> source) {
+    FlowableOnAssemblyConnectable(ConnectableFlowable<T> source) {
         this.source = source;
         this.assembled = new RxJavaAssemblyException();
     }
 
     @Override
-    protected void subscribeActual(Observer<? super T> s) {
-        source.subscribe(new OnAssemblyObserver<T>(s, assembled));
+    protected void subscribeActual(Subscriber<? super T> s) {
+        if (s instanceof ConditionalSubscriber) {
+            source.subscribe(new OnAssemblyConditionalSubscriber<T>((ConditionalSubscriber<? super T>)s, assembled));
+        } else {
+            source.subscribe(new OnAssemblySubscriber<T>(s, assembled));
+        }
     }
 
     @Override

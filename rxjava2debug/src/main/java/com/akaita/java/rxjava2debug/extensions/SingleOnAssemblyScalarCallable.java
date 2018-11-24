@@ -14,26 +14,24 @@
  * limitations under the License.
  */
 
-package hu.akarnokd.rxjava2.debug;
+package com.akaita.java.rxjava2debug.extensions;
 
-import java.util.concurrent.Callable;
-
-import hu.akarnokd.rxjava2.debug.SingleOnAssembly.OnAssemblySingleObserver;
+import com.akaita.java.rxjava2debug.extensions.SingleOnAssembly.OnAssemblySingleObserver;
 import io.reactivex.*;
-import io.reactivex.exceptions.Exceptions;
+import io.reactivex.internal.fuseable.ScalarCallable;
 
 /**
  * Wraps a Publisher and inject the assembly info.
  *
  * @param <T> the value type
  */
-final class SingleOnAssemblyCallable<T> extends Single<T> implements Callable<T> {
+final class SingleOnAssemblyScalarCallable<T> extends Single<T> implements ScalarCallable<T> {
 
     final SingleSource<T> source;
 
     final RxJavaAssemblyException assembled;
 
-    SingleOnAssemblyCallable(SingleSource<T> source) {
+    SingleOnAssemblyScalarCallable(SingleSource<T> source) {
         this.source = source;
         this.assembled = new RxJavaAssemblyException();
     }
@@ -45,12 +43,7 @@ final class SingleOnAssemblyCallable<T> extends Single<T> implements Callable<T>
 
     @SuppressWarnings("unchecked")
     @Override
-    public T call() throws Exception {
-        try {
-            return ((Callable<T>)source).call();
-        } catch (Exception ex) {
-            Exceptions.throwIfFatal(ex);
-            throw (Exception)assembled.appendLast(ex);
-        }
+    public T call() {
+        return ((ScalarCallable<T>)source).call();
     }
 }

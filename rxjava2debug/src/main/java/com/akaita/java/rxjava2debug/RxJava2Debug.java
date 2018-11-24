@@ -16,12 +16,10 @@
 
 package com.akaita.java.rxjava2debug;
 
-import hu.akarnokd.rxjava2.debug.RxJavaAssemblyException;
-import hu.akarnokd.rxjava2.debug.RxJavaAssemblyTracking;
+import com.akaita.java.rxjava2debug.extensions.RxJavaAssemblyException;
+import com.akaita.java.rxjava2debug.extensions.RxJavaAssemblyTracking;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
-
-import java.util.List;
 
 import static com.akaita.java.rxjava2debug.ExceptionUtils.setRootCause;
 import static com.akaita.java.rxjava2debug.StackTraceUtils.parseStackTrace;

@@ -14,40 +14,38 @@
  * limitations under the License.
  */
 
-package hu.akarnokd.rxjava2.debug;
+package com.akaita.java.rxjava2debug.extensions;
 
 import java.util.concurrent.Callable;
 
-import hu.akarnokd.rxjava2.debug.ObservableOnAssembly.OnAssemblyObserver;
+import com.akaita.java.rxjava2debug.extensions.CompletableOnAssembly.OnAssemblyCompletableObserver;
 import io.reactivex.*;
 import io.reactivex.exceptions.Exceptions;
 
 /**
- * Wraps a ObservableSource and inject the assembly info.
- *
- * @param <T> the value type
+ * Wraps a CompletableSource and inject the assembly info.
  */
-final class ObservableOnAssemblyCallable<T> extends Observable<T> implements Callable<T> {
+final class CompletableOnAssemblyCallable extends Completable implements Callable<Object> {
 
-    final ObservableSource<T> source;
+    final CompletableSource source;
 
     final RxJavaAssemblyException assembled;
 
-    ObservableOnAssemblyCallable(ObservableSource<T> source) {
+    CompletableOnAssemblyCallable(CompletableSource source) {
         this.source = source;
         this.assembled = new RxJavaAssemblyException();
     }
 
     @Override
-    protected void subscribeActual(Observer<? super T> s) {
-        source.subscribe(new OnAssemblyObserver<T>(s, assembled));
+    protected void subscribeActual(CompletableObserver s) {
+        source.subscribe(new OnAssemblyCompletableObserver(s, assembled));
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public T call() throws Exception {
+    public Object call() throws Exception {
         try {
-            return ((Callable<T>)source).call();
+            return ((Callable<Object>)source).call();
         } catch (Exception ex) {
             Exceptions.throwIfFatal(ex);
             throw (Exception)assembled.appendLast(ex);

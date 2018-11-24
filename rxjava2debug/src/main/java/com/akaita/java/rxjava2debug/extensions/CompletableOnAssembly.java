@@ -14,42 +14,40 @@
  * limitations under the License.
  */
 
-package hu.akarnokd.rxjava2.debug;
+package com.akaita.java.rxjava2debug.extensions;
 
 import io.reactivex.*;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 
 /**
- * Wraps a Publisher and inject the assembly info.
- *
- * @param <T> the value type
+ * Wraps a CompletableSource and inject the assembly info.
  */
-final class SingleOnAssembly<T> extends Single<T> {
+final class CompletableOnAssembly extends Completable {
 
-    final SingleSource<T> source;
+    final CompletableSource source;
 
     final RxJavaAssemblyException assembled;
 
-    SingleOnAssembly(SingleSource<T> source) {
+    CompletableOnAssembly(CompletableSource source) {
         this.source = source;
         this.assembled = new RxJavaAssemblyException();
     }
 
     @Override
-    protected void subscribeActual(SingleObserver<? super T> s) {
-        source.subscribe(new OnAssemblySingleObserver<T>(s, assembled));
+    protected void subscribeActual(CompletableObserver s) {
+        source.subscribe(new OnAssemblyCompletableObserver(s, assembled));
     }
 
-    static final class OnAssemblySingleObserver<T> implements SingleObserver<T>, Disposable {
+    static final class OnAssemblyCompletableObserver implements CompletableObserver, Disposable {
 
-        final SingleObserver<? super T> actual;
+        final CompletableObserver actual;
 
         final RxJavaAssemblyException assembled;
 
         Disposable d;
 
-        OnAssemblySingleObserver(SingleObserver<? super T> actual, RxJavaAssemblyException assembled) {
+        OnAssemblyCompletableObserver(CompletableObserver actual, RxJavaAssemblyException assembled) {
             this.actual = actual;
             this.assembled = assembled;
         }
@@ -64,13 +62,13 @@ final class SingleOnAssembly<T> extends Single<T> {
         }
 
         @Override
-        public void onSuccess(T value) {
-            actual.onSuccess(value);
+        public void onError(Throwable t) {
+            actual.onError(assembled.appendLast(t));
         }
 
         @Override
-        public void onError(Throwable t) {
-            actual.onError(assembled.appendLast(t));
+        public void onComplete() {
+            actual.onComplete();
         }
 
         @Override

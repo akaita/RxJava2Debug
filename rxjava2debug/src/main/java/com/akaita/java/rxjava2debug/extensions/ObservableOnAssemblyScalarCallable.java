@@ -14,43 +14,36 @@
  * limitations under the License.
  */
 
-package hu.akarnokd.rxjava2.debug;
+package com.akaita.java.rxjava2debug.extensions;
 
-import java.util.concurrent.Callable;
-
-import hu.akarnokd.rxjava2.debug.MaybeOnAssembly.OnAssemblyMaybeObserver;
+import com.akaita.java.rxjava2debug.extensions.ObservableOnAssembly.OnAssemblyObserver;
 import io.reactivex.*;
-import io.reactivex.exceptions.Exceptions;
+import io.reactivex.internal.fuseable.ScalarCallable;
 
 /**
- * Wraps a MaybeSource and inject the assembly info.
+ * Wraps a ObservableSource and inject the assembly info.
  *
  * @param <T> the value type
  */
-final class MaybeOnAssemblyCallable<T> extends Maybe<T> implements Callable<T> {
+final class ObservableOnAssemblyScalarCallable<T> extends Observable<T> implements ScalarCallable<T> {
 
-    final MaybeSource<T> source;
+    final ObservableSource<T> source;
 
     final RxJavaAssemblyException assembled;
 
-    MaybeOnAssemblyCallable(MaybeSource<T> source) {
+    ObservableOnAssemblyScalarCallable(ObservableSource<T> source) {
         this.source = source;
         this.assembled = new RxJavaAssemblyException();
     }
 
     @Override
-    protected void subscribeActual(MaybeObserver<? super T> s) {
-        source.subscribe(new OnAssemblyMaybeObserver<T>(s, assembled));
+    protected void subscribeActual(Observer<? super T> s) {
+        source.subscribe(new OnAssemblyObserver<T>(s, assembled));
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public T call() throws Exception {
-        try {
-            return ((Callable<T>)source).call();
-        } catch (Exception ex) {
-            Exceptions.throwIfFatal(ex);
-            throw (Exception)assembled.appendLast(ex);
-        }
+    public T call() {
+        return ((ScalarCallable<T>)source).call();
     }
 }
