@@ -1,5 +1,9 @@
 # Changelog for RxJava2Debug
 
+## v1.4.0 2018/11/24
+* Improve enhanced exception's `localisedMessage` (for example, show `caused by java.langNullPointerException: The mapper function returned a null value` instead of `null`)
+* Fix packages comflict with RxJava2Extensions
+
 ## v1.3.0 2018/10/28
 * Fixed compatibility with RxJava-2.2.1 (thanks to @akarnokd)
 

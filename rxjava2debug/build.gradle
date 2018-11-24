@@ -87,7 +87,7 @@ jar {
     manifest {
         name = 'rxjava2-debug'
         instruction 'Bundle-Vendor', 'akaita'
-        instruction 'Bundle-DocURL', 'https://github.com/akarnokd/RxJava2Debug'
+        instruction 'Bundle-DocURL', 'https://github.com/akaita/RxJava2Debug'
         instruction 'Import-Package', '!org.junit,!junit.framework,!org.mockito.*,*'
         instruction 'Eclipse-ExtensibleAPI', 'true'
     }

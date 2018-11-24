@@ -1,10 +1,10 @@
 # RxJava2Debug [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Quickly%20find%20out%20the%20source%20issue%20causing%20your%20RxJava2%20stream%20fail&url=https://github.com/akaita/RxJava2Debug&via=github&hashtags=rxjava,debug,fixthatcrash)
 
 [![License](https://img.shields.io/badge/License%20-Apache%202-337ab7.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Maven](https://img.shields.io/badge/%20Maven%20-1.3.0-5bc0de.svg) ](https://mvnrepository.com/artifact/com.akaita.java/rxjava2-debug/1.3.0)
-[![Jcenter](https://img.shields.io/badge/%20Jcenter%20-1.3.0-5bc0de.svg) ](https://bintray.com/akaita/java/rxjava2-debug/_latestVersion)
+[![Maven](https://img.shields.io/badge/%20Maven%20-1.4.0-5bc0de.svg) ](https://mvnrepository.com/artifact/com.akaita.java/rxjava2-debug/1.4.0)
+[![Jcenter](https://img.shields.io/badge/%20Jcenter%20-1.4.0-5bc0de.svg) ](https://bintray.com/akaita/java/rxjava2-debug/_latestVersion)
 [![Arsenal](https://img.shields.io/badge/%20Arsenal%20-%20RxJava2Debug%20-4cae4c.svg?style=flat)](https://android-arsenal.com/details/1/6027)
-[![Methods](https://img.shields.io/badge/%20Methods%20%7C%20Size%20-%20239%20%7C%2040%20KB-d9534f.svg)](http://www.methodscount.com/?lib=com.akaita.java%3Arxjava2-debug%3A1.3.0)
+[![Methods](https://img.shields.io/badge/%20Methods%20%7C%20Size%20-%20239%20%7C%2040%20KB-d9534f.svg)](http://www.methodscount.com/?lib=com.akaita.java%3Arxjava2-debug%3A1.4.0)
 
 A library to make StackTraces involving RxJava2 more meaningful (they will always point to your code!). 
 
@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.akaita.java:rxjava2-debug:1.3.0'
+    compile 'com.akaita.java:rxjava2-debug:1.4.0'
 }
 ```
 
@@ -41,7 +41,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.akaita.java:rxjava2-debug:1.3.0'
+    compile 'com.akaita.java:rxjava2-debug:1.4.0'
 }
 ```
 
@@ -142,7 +142,7 @@ Example (pointing to my own faulty code in `com.akaita.fgas.activities.TopActivi
 ```java
 FATAL EXCEPTION: main
 Process: com.akaita.fgas.debug, PID: 22538
-java.lang.Throwable: The mapper function returned a null value.
+java.lang.Throwable: caused by java.lang.NullPointerException: The mapper function returned a null value.
    at io.reactivex.internal.functions.ObjectHelper.requireNonNull(ObjectHelper.java:39)
    at io.reactivex.internal.operators.observable.ObservableMap$MapObserver.onNext(ObservableMap.java:59)
    at hu.akarnokd.rxjava2.debug.ObservableOnAssembly$OnAssemblyObserver.onNext(ObservableOnAssembly.java:55)
@@ -233,7 +233,7 @@ Result:
 ```java
 FATAL EXCEPTION: main
 Process: com.akaita.fgas.debug, PID: 22538
-java.lang.Throwable: The mapper function returned a null value.
+java.lang.Throwable: caused by java.lang.NullPointerException: The mapper function returned a null value.
    at io.reactivex.internal.functions.ObjectHelper.requireNonNull(ObjectHelper.java:39)
    at io.reactivex.internal.operators.observable.ObservableMap$MapObserver.onNext(ObservableMap.java:59)
    [...]
