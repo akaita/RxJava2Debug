@@ -51,10 +51,10 @@ class ExceptionUtils {
 
         Throwable topThrowable = null;
         for (int i = causes.size() - 1; i >= 0; i--) {
-            if (i > 0) {
-                topThrowable = new Throwable(causes.get(i).getMessage(), topThrowable);
-            } else {
+            if (i == causes.size() - 1) {
                 topThrowable = new Throwable(topMessage, topThrowable);
+            } else {
+                topThrowable = new Throwable(causes.get(i).getMessage(), topThrowable);
             }
 
             if (causes.get(i).getStackTrace() != null) {

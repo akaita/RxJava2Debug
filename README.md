@@ -142,7 +142,7 @@ Example (pointing to my own faulty code in `com.akaita.fgas.activities.TopActivi
 ```java
 FATAL EXCEPTION: main
 Process: com.akaita.fgas.debug, PID: 22538
-java.lang.Throwable: caused by java.lang.NullPointerException: The mapper function returned a null value.
+java.lang.Throwable: The mapper function returned a null value.
    at io.reactivex.internal.functions.ObjectHelper.requireNonNull(ObjectHelper.java:39)
    at io.reactivex.internal.operators.observable.ObservableMap$MapObserver.onNext(ObservableMap.java:59)
    at hu.akarnokd.rxjava2.debug.ObservableOnAssembly$OnAssemblyObserver.onNext(ObservableOnAssembly.java:55)
@@ -162,7 +162,7 @@ java.lang.Throwable: caused by java.lang.NullPointerException: The mapper functi
    at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1133)
    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:607)
    at java.lang.Thread.run(Thread.java:761)
-Caused by: java.lang.Throwable
+Caused by: caused by java.lang.NullPointerException: The mapper function returned a null value.
    at io.reactivex.internal.functions.ObjectHelper.requireNonNull(ObjectHelper.java:39)
    at com.akaita.fgas.activities.TopActivity.onResume(TopActivity.java:205)
    at android.app.Instrumentation.callActivityOnResume(Instrumentation.java:1269)
